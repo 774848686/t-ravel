@@ -49,6 +49,11 @@ import Bscroll from 'better-scroll'
 import { mapState, mapMutations } from 'vuex'
 export default {
   name: 'CityList',
+  data(){
+    return {
+      listHeight:[]
+    }
+  },
   props: {
     hot: Array,
     cities: Object,
@@ -64,6 +69,15 @@ export default {
       this.changeCity(city)
       this.$router.push('/')
     },
+    _calculateHeight(){
+      let height = 0;
+      this.listHeight.push(height);
+      Object.keys(this.cities).forEach( (key, i) => {
+          height+=this.$refs[key][0].clientHeight;
+          this.listHeight.push(height);
+      });
+      console.log(this.listHeight)
+    },
     ...mapMutations(['changeCity'])
   },
   watch: {
@@ -72,7 +86,15 @@ export default {
         const element = this.$refs[this.letter][0]
         this.scroll.scrollToElement(element)
       }
+    },
+    cities(){
+      if(this.cities){
+        setTimeout(()=>{
+          this._calculateHeight();
+        },20);
+      }
     }
+    
   },
   mounted () {
     this.scroll = new Bscroll(this.$refs.wrapper)

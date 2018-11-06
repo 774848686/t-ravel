@@ -9,7 +9,7 @@
         :key="item.id"
         :to="'/detail/' + item.id"
       >
-        <img class="item-img" :src="item.imgUrl" />
+        <img class="item-img" v-lazy="item.imgUrl" />
         <div class="item-info">
           <p class="item-title">{{item.title}}</p>
           <p class="item-desc">{{item.desc}}</p>
