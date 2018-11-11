@@ -2,6 +2,7 @@
   <ul class="list">
     <li
       class="item"
+      :class="{'current':item===currentAlphabet}"
       v-for="item of letters"
       :key="item"
       :ref="item"
@@ -19,7 +20,8 @@
 export default {
   name: 'CityAlphabet',
   props: {
-    cities: Object
+    cities: Object,
+    currentAlphabet:String
   },
   computed: {
     letters () {
@@ -63,7 +65,8 @@ export default {
     },
     handleTouchEnd () {
       this.touchStatus = false
-    }
+    },
+
   }
 }
 </script>
@@ -83,4 +86,6 @@ export default {
       line-height: .4rem
       text-align: center
       color: $bgColor
+      &.current
+        color:#999999
 </style>
