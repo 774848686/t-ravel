@@ -17,12 +17,11 @@ Vue.use(VueAwesomeSwiper)
 Vue.use(VueLazyload, {
   loading: 'static/image/lazying.jpg'
 })
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   store,
-  components: { App },
+  components: { App},
   template: '<App/>'
 })
