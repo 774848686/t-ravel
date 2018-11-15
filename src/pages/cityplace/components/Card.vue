@@ -1,41 +1,53 @@
 <template>
-  <div class="card">
-    <div class="mp-sub-item">
-      <div class="clrfix">
-        <div class="mp-sub-img">
-            <img :src="parklandInfo.imgurl" :key="parklandInfo.name">
+<div>
+    <div class="card" v-for="(item,index) in parklandInfo" :key="index">
+      <div class="mp-sub-item">
+        <div class="clrfix">
+          <div class="mp-sub-img">
+              <img :src="item.imgurl" :alt="item.name">
+          </div>
+          <div class="mp-sub-info">
+              <p class="mp-sub-name">{{item.name}}</p>
+              <p class="mp-sub-text">{{item.text}}条评论</p>
+              <div class="class">
+                <span class="stars">{{item.score | formatStars}}</span>
+                <span class="score">{{item.score}}分</span>
+              </div>
+              <div class="price"><span class="mp-sub-rmb">￥</span><em class="mp-sub-number">{{item.prize}}</em>起</div>                   
+          </div> 
         </div>
-        <div class="mp-sub-info">
-            <p class="mp-sub-name">{{parklandInfo.name}}</p>
-            <p class="mp-sub-text">{{parklandInfo.text}}条评论</p>
-            <div class="class">
-              <span class="stars">{{stars}}</span>
-              <span class="score">{{parklandInfo.score}}分</span>
-            </div>
-            <div class="price"><span class="mp-sub-rmb">￥</span><em class="mp-sub-number">{{parklandInfo.price}}</em>起</div>                   
-        </div> 
-      </div>
-      <div class="mp_sub_more">
-        <span class="mp-sub-reason">必去理由</span>
-        <div class="mp-sub-desc">
-            {{parklandInfo.desc}}
+        <div class="mp_sub_more">
+          <span class="mp-sub-reason">必去理由</span>
+          <div class="mp-sub-desc">
+              {{item.desc}}
+          </div>
+          <div class="mp-sub-note">{{item.note}}</div>
+          <div class="mp-sub-tolink">去看看</div>
         </div>
-        <div class="mp-sub-note">{{parklandInfo.note}}</div>
-        <div class="mp-sub-tolink">去看看</div>
-      </div>
-    </div> 
+      </div> 
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: "CardList",
   props:{
-    parklandInfo: Object,
+    parklandInfo: Array,
     default: {}
   },
   data() {
     return {};
   },
+  filters: {
+    formatStars(value) {
+      if (!value) return '';
+      let stars = '',len = Math.round(value);
+        for(let i=0;i<len;i++){
+          stars+='★';
+        }
+        return stars;
+    }
+},
   computed: {
     stars () {
       let stars = '',len = Math.floor(this.parklandInfo.score);
