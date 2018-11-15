@@ -1,0 +1,151 @@
+{
+    "ret": true,
+    "data": {
+      "categoryList": [{
+          "title": "打卡必游",
+          "dec":"杭州享“人间天堂”美誉，西湖、烟雨…将温婉的江南展现在你面前。",
+          "list": [{
+            "imgurl": "//img1.qunarzz.com/sight/p0/1603/87/87146cf32fa8635e90.water.png_280x200_129ff35b.png",
+            "name":"西湖",
+            "text":"9575",
+            "score":"4.8",
+            "prize":"8",
+            "desc":"富有东方意蕴的西湖,涵纳着独绝的美学价值,积淀着深厚的人文历史，来杭州必打卡哦~ ",
+            "note":"建议游玩时长：3-6小时"
+          },{
+            "imgurl": "//img1.qunarzz.com/sight/p0/1809/8e/8e61ee146113f2f7a3.img.jpg_280x200_1ef5c3ce.jpg",
+            "name":"宋城千古情 ",
+            "text":"17156",
+            "score":"4.9",
+            "prize":"0.1",
+            "desc":"这是一生必看的演出，是宋城景区的灵魂，把烟雨江南表现的淋漓尽致。 ",
+            "note":"建议游玩时长：24小时"
+          },{
+            "imgurl": "//img1.qunarzz.com/sight/p0/1412/91/3bd4440e93c4b26e6dd9620d4ffb4071.water.jpg_280x200_c3c39a0e.jpg",
+            "name":"西溪国家湿地公园 ",
+            "text":"14887",
+            "score":"4.9",
+            "prize":"0.1",
+            "desc":"曾与西湖、西泠并称为杭州三西，给这片古老的土地赋予了美妙和神秘的色彩。",
+            "note":"建议游玩时长：1小时"
+          },{
+            "imgurl": "//img1.qunarzz.com/sight/p0/1603/57/57ee153a3441d35190.water.jpg_280x200_fd8b6cb7.jpg",
+            "name":"杭州飞来峰",
+            "text":"10973",
+            "score":"4.9",
+            "prize":"45",
+            "desc":"飞来峰是江南少见的古代石窟艺术瑰宝，有着兔耳岭的石峰见景之美，可与四川大足石刻媲美。",
+            "note":"建议游玩时长：2小时"
+          }]
+        },{
+            "title": "自然风光",
+            "dec":"悠然的杭州，气候宜人、繁华富庶，美好的自然景观让人心情平和。",
+            "list": [{
+              "imgurl": "//img1.qunarzz.com/sight/p0/201405/27/8211cadd5d9fefeaa044c5b7eefc695d.jpg_280x200_efeadc2a.jpg",
+              "name":"千岛湖",
+              "text":"8173",
+              "score":"4.8",
+              "prize":"2.4",
+              "desc":"千岛湖是黄金旅游线上的一颗璀璨明珠，更被誉为“天下第一秀水",
+              "note":"建议游玩时长：1-2天"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1603/18/18ae748f826c5abe90.water.jpg_280x200_ed83ab05.jpg",
+              "name":"大明山 ",
+              "text":"3377",
+              "score":"3.9",
+              "prize":"83.8",
+              "desc":"气候条件与黄山类似，山色黟然若黛，宛如国画中的泼墨山水，称为“浙江小黄山",
+              "note":"建议游玩时长：4-6小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/201405/29/0290f90b03596cdef35d73e753e635ee.jpg_280x200_e3ede17e.jpg",
+              "name":"京杭大运河 ",
+              "text":"1937",
+              "score":"4.5",
+              "prize":"50",
+              "desc":"如果说长城是凝固的奇迹，那么大运河就是流动的奇迹。",
+              "note":"建议游玩时长：2-4小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1510/25/2555f6914be5d852.water.jpg_280x200_78dbeb21.jpg",
+              "name":"大奇山国家森林公园",
+              "text":"1370",
+              "score":"4.7",
+              "prize":"57.9",
+              "desc":"大奇山史称'江南第一名山'，是一处集江南山水与草原风光于一体的综合性森林公园。",
+              "note":"建议游玩时长：4小时"
+            }]
+          },{
+            "title": "亲子畅玩",
+            "dec":"家长最希望的莫过于能让孩子玩的开心又能学到东西，什么地方可以满足呢？",
+            "list": [{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1411/b6/662fc49d1d26a5a7775cf6b7f8b4ecec.water.jpg_280x200_69e713e5.jpg",
+              "name":"杭州野生动物世界",
+              "text":"6468",
+              "score":"4.9",
+              "prize":"170",
+              "desc":"以自然为主题，以山峦沟壑为背景，以野生动植物为特色。让人充分感受到“野趣”和“情趣",
+              "note":"建议游玩时长：4-6小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1810/5e/5e855d32e9aff0aba3.img.jpg_280x200_f9adf849.jpg",
+              "name":"杭州烂苹果乐园  ",
+              "text":"6694",
+              "score":"4",
+              "prize":"18.8",
+              "desc":"大型高科技亲子乐园，融汇了高科技互动体验项目。这里没有作业，只有好看的表演、好玩的游戏",
+              "note":"建议游玩时长：4-6小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1505/b0/b00afc4731611700.water.jpg_280x200_a1d3e698.jpg",
+              "name":"Do都城 ",
+              "text":"1272",
+              "score":"3.5",
+              "prize":"90",
+              "desc":"体验馆创设模拟城市的情境，让儿童在活动中感知社会运行规则，提高对世界的认知与适应能力",
+              "note":"建议游玩时长：2-4小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/201212/18/f195032e85740a4b93835fbb.jpg_280x200_77b6b42a.jpg",
+              "name":"杭州海底世界",
+              "text":"3443",
+              "score":"4.7",
+              "prize":"115",
+              "desc":"游杭州海底世界,看神奇海洋生物。漫步全国最长的珊瑚海景隧道,欣赏惊险刺激的人鲨共舞表演……",
+              "note":"建议游玩时长：4小时"
+            }]
+          },{
+            "title": "历史画卷",
+            "dec":"这里是一幅被飞速的时代遗落下来的韵味，是一处令人流连的世外桃源。",
+            "list": [{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1412/f2/3ff99d92f10eda6bfc40db2f76e21b56.water.jpg_280x200_60f934f8.jpg",
+              "name":"雷峰塔",
+              "text":"3146",
+              "score":"4.9",
+              "prize":"0.1",
+              "desc":"回味白娘子传说，在塔顶俯瞰西湖和净慈寺",
+              "note":"建议游玩时长：1-2小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/201301/16/9e3ef338eb7cccf993835fbb.jpg_280x200_a68ce13c.jpg",
+              "name":"胡雪岩故居",
+              "text":"6694",
+              "score":"4",
+              "prize":"18.8",
+              "desc":"晚清红顶巨商胡雪岩的豪宅，极尽奢华的江南园林",
+              "note":"建议游玩时长：4-6小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/1603/f4/f4cff52a99bd4d3790.water.jpg_280x200_e8f65489.jpg",
+              "name":"Do都城 ",
+              "text":"1272",
+              "score":"3.5",
+              "prize":"90",
+              "desc":"体验馆创设模拟城市的情境，让儿童在活动中感知社会运行规则，提高对世界的认知与适应能力",
+              "note":"建议游玩时长：2-4小时"
+            },{
+              "imgurl": "//img1.qunarzz.com/sight/p0/201212/18/f195032e85740a4b93835fbb.jpg_280x200_77b6b42a.jpg",
+              "name":"杭州海底世界",
+              "text":"3443",
+              "score":"4.7",
+              "prize":"115",
+              "desc":"游杭州海底世界,看神奇海洋生物。漫步全国最长的珊瑚海景隧道,欣赏惊险刺激的人鲨共舞表演……",
+              "note":"建议游玩时长：4小时"
+            }]
+          }]
+    }
+  }
+  

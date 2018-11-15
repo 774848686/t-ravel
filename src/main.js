@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import axios from 'axios'
 import router from './router'
 import fastClick from 'fastclick'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
