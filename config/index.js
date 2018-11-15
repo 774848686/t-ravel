@@ -3,7 +3,23 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+let getIPAdress;
+let interfaces = require('os').networkInterfaces();
+if (interfaces) {
+    for (let devName in interfaces) {
+        if (devName) {
+            let iface = interfaces[devName];
+            for (let i = 0; i < iface.length; i++) {
+                let alias = iface[i];
+                if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+                    getIPAdress = alias.address;
+                    break;
+                }
+            }
+        }
 
+    }
+}
 module.exports = {
   dev: {
 
@@ -12,7 +28,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: `http://${getIPAdress}:8080`,
         pathRewrite:{
           '^/api':'/static/mock'
         }
@@ -20,9 +36,9 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: getIPAdress, // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
