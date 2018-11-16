@@ -20,7 +20,7 @@ import CardList from './Card.vue'
 export default {
   name: 'ListShow',
   components:{
-    CardList
+    CardList,
   },
   data() {
     return {

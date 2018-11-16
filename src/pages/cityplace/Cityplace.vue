@@ -1,31 +1,39 @@
 <template>
     <div>
+      <scroll ref="listenscroll">
         <place-header></place-header>
         <tab-bar></tab-bar>
         <list-show></list-show>
+        </scroll>
     </div>
 </template>
 <script>
-import PlaceHeader from './components/Header'
-import TabBar from './components/Tabbar'
-import ListShow from './components/Listshow'
+import Scroll from "common/scroll/scroll";
+import PlaceHeader from "./components/Header";
+import TabBar from "./components/Tabbar";
+import ListShow from "./components/Listshow";
 export default {
-  name: 'Cityplace',
+  name: "Cityplace",
   components: {
     PlaceHeader,
     TabBar,
-    ListShow
+    ListShow,
+    Scroll
   },
   data() {
-    return {}
+    return {
+      sequenceList:[]
+    };
   },
   computed: {
     
   },
   methods: {},
-  mounted() {},
+  mounted() {
+    console.log(this.$refs.listenscroll)
+  },
   activated() {}
-}
+};
 </script>
 <style lang="stylus" scoped>
 </style>
