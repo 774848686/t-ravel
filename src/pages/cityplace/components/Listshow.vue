@@ -9,9 +9,6 @@
         <card-list :parklandInfo='item.list'></card-list>
       </div> 
     </div>
-    <div class="list-content">2</div>
-    <div class="list-content">3</div>
-    <div class="list-content">4</div>
   </div>
 </template>
 <script>
@@ -24,7 +21,7 @@ export default {
   },
   data() {
     return {
-      PlacesInfo:{}
+      PlacesInfo:{},
     }
   },
   methods: {

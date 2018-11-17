@@ -3,7 +3,7 @@
         <ul>
             <li v-for="(item,index) of context"
              :key="index" 
-             :class="currentIndex===index?'active':''"
+             :class="currentNum===index?'active':''"
              @click="tabCahnge(index)">
                 {{item}}
             </li>
@@ -13,19 +13,31 @@
 <script>
 export default {
   name: 'Tabbar',
+  props:{
+      currentIndex: {
+        type: Number,
+        default:0
+      },
+  },
   data() {
     return {
       context: ['打卡必游', '自然风光', '亲子畅玩', '历史画卷'],
-      currentIndex:0
+      currentNum:0
     }
   },
   methods:{
       tabCahnge(index){
-          this.currentIndex = index;
+          this.currentNum = index;
+          this.$emit('tabCahnge', index)
       }
   },
   mounted(){
 
+  },
+  watch:{
+      currentIndex(){
+          this.currentNum = this.currentIndex;
+      }
   }
 }
 </script>
