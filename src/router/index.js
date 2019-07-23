@@ -1,10 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-Vue.use(Router)
-const Home = () => import('@/pages/home/Home')
-const City = () => import('@/pages/city/City')
-const Detail = () => import('@/pages/detail/Detail')
-const Cityplace = () =>import('@/pages/cityplace/Cityplace')
+import Vue from 'vue';
+import Router from 'vue-router';
+Vue.use(Router);
+const Home = () => import('@/pages/home/Home');
+const City = () => import('@/pages/city/City');
+const Detail = () => import('@/pages/detail/Detail');
+const Cityplace = () => import('@/pages/cityplace/Cityplace');
+const Tabview = () => import('@/pages/tabview/Tabview');
 
 export default new Router({
   routes: [{
@@ -23,8 +24,12 @@ export default new Router({
     path: '/cityplace',
     name: 'Cityplace',
     component: Cityplace
+  }, {
+    path: '/tabview',
+    name: 'Tabview',
+    component: Tabview
   }],
-  scrollBehavior (to, from, savedPosition) {
-    return { x: 0, y: 0 }
+  scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 };
   }
 })
