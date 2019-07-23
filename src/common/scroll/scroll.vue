@@ -59,7 +59,6 @@
           click: this.click,
           eventPassthrough: DIRECTION_V
         })
-
         if (this.listenScroll) {
           this.scroll.on('scroll', (pos) => {
             this.$emit('scroll', pos)
@@ -106,6 +105,6 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style scoped lang="stylus">
 
 </style>
