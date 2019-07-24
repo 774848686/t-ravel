@@ -1,21 +1,24 @@
 <template>
   <div class="tab-swiper">
     <div class="tabbar">
-      <ul class="tab-wrapper">
+      <ul class="tab-wrapper" ref="twrapper">
         <li
-          :class="currentIndex===index?'tab-slide active':'tab-slide'"
-          v-for="(item,index) in context"
+          :class="state.tCurrentIndex===index?'tab-slide active':'tab-slide'"
+          v-for="(item,index) in tabList"
           :key="index"
           :style="tabWidth"
           @click="tabSwitch(index)"
-        >{{item}}</li>
+        >{{item.title}}</li>
       </ul>
     </div>
     <div class="swiperbar">
-      <ul class="swiperbar-wraper">
-        <li class="swiperbar-slide">11</li>
-        <li class="swiperbar-slide">22</li>
-      </ul>
+      <div class="swiperbar-wraper" :style="swiperWidth" ref="swraper">
+        <div class="swiperbar-slide" v-for="(item,index) in swiperList" :key="index">
+          <ul class="slide-wrapper">
+            <li class="slide-item" v-for="(subitem,index) in item.list" :key="index">{{subitem}}</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,23 +27,252 @@ export default {
   name: "Tabbar",
   data() {
     return {
-      context: ["打卡必游", "自然风光", "亲子畅玩", "历史画卷"],
-      currentIndex: 0,
-      swiperList: []
+      tabList: [
+        { id: 10000, title: "旅游娃娃" },
+        { id: 10001, title: "自然风光" },
+        { id: 10002, title: "亲子畅玩" },
+        { id: 10003, title: "历史画卷" }
+      ],
+      state: {
+        tWrawpper: null, //tab   容器变量
+        sWrapper: null, //swiper 容器变量
+        tStartX: 0, // tab touch事件开始距离
+        sStartX: 0, //swiper touch事件开始距离
+        tMoveX: 0, // tab touch 滑动距离
+        sMoveX: 0, // swiper 滑动距离
+        tTranslateX: 0, //tab 切换的横向距离
+        sTranslateX: 0, //swiper 切换的横向距离
+        transitionDuring: 300, //滑动时间
+        tCurrentIndex: 0, //tab 当前索引
+        sCurrentIndex: 0, // swiper 当前索引
+        tPreIndex: 0, //tab 前一个索引
+        sPreIndex: 0, //swiper 前一个索引
+        sSlideWd: 0, // swiper 每次滑动的距离
+        currentTranslate: {
+          x: 0,
+          y: 0
+        }, //当前的translate值
+        sdedLine: 80 //swiper 滑动底线
+      }
     };
   },
   computed: {
+    /**
+     * 初始化 tab样式
+     */
     tabWidth() {
-      let tabStyle = `width:${100 / this.context.length}%`;
+      let tabStyle = `width:${100 / this.tabList.length}%`;
       return tabStyle;
+    },
+    /**
+     * 初始化 swiper 样式
+     */
+    swiperWidth() {
+      let swiperStyle = `width:${100 * this.tabList.length}%`;
+      return swiperStyle;
+    },
+    /**
+     * 初始化 swiper 数组
+     */
+    swiperList() {
+      let templist = [];
+      this.tabList.forEach((item, index) => {
+        templist.push({
+          tabid: item.id,
+          list: [index + 1, index + 2, index + 3, index + 4]
+        });
+      });
+      return templist;
     }
   },
   methods: {
+    bind() {
+      let { sWrapper } = this.state;
+      let events = [
+        {
+          wraper: sWrapper,
+          eventName: "touchstart",
+          callFn: this.sTouchStart
+        },
+        {
+          wraper: sWrapper,
+          eventName: "touchmove",
+          callFn: this.sTouchMove
+        },
+        {
+          wraper: sWrapper,
+          eventName: "touchend",
+          callFn: this.sTouchEnd
+        },
+        {
+          wraper: sWrapper,
+          eventName: "transitionend | webkitTransitionEnd",
+          callFn: this.swiperSlideEnd
+        }
+      ];
+      events.forEach(item => {
+        this.addEvent(item.wraper, item.eventName, item.callFn);
+      });
+    },
+    /**
+     *  监听事件
+     *  @params {Object}   wraper:元素变量
+     *  @params {String}   eventname:事件名称
+     *  @params {Function} fn:事件回调
+     */
+    addEvent(wraper, eventname, fn) {
+      if (eventname.includes(" | ")) {
+        let events = eventname.split(" | ");
+        events.forEach(item => {
+          wraper.addEventListener(item, fn);
+        });
+      }
+      wraper.addEventListener(eventname, fn);
+    },
+    /**
+     * tab 点击切换
+     */
     tabSwitch(index) {
-      this.currentIndex = index;
+      this.state.tPreIndex = this.state.tCurrentIndex;
+      this.state.tCurrentIndex = index;
+      this.swiperTranslate();
+    },
+    swiperTranslate() {
+      let { sWrapper, transitionDuring } = this.state;
+      this._translate(sWrapper, this.swiperSlidedis(), 0, 0);
+      this._transitionDuration(sWrapper, transitionDuring);
+    },
+    swiperRever() {
+      let { sWrapper, transitionDuring, currentTranslate } = this.state;
+      this._translate(sWrapper, currentTranslate.x, 0, 0);
+      this._transitionDuration(sWrapper, transitionDuring - 100);
+    },
+    sTouchStart(e) {
+      this.state.sStartX =
+        e.type === "touchstart" ? e.targetTouches[0].pageX : e.pageX;
+      this.state.sMoveX = 0;
+    },
+    sTouchMove(e) {
+      let {
+        sStartX,
+        sWrapper,
+        transitionDuring,
+        sSlideWd,
+        currentTranslate
+      } = this.state;
+      let currentX =
+        e.type === "touchmove" ? e.targetTouches[0].pageX : e.pageX;
+      //临界值
+      if (currentX < 0) {
+        currentX = 0;
+      }
+      if (currentX > sSlideWd) {
+        currentX = sSlideWd;
+      }
+      this.state.sMoveX = Math.round(currentX - sStartX);
+      console.log(currentTranslate.x);
+      this._translate(sWrapper, currentTranslate.x + this.state.sMoveX, 0, 0);
+      this._transitionDuration(sWrapper, transitionDuring);
+    },
+    targetMaxmove() {
+      let { sMoveX, swraper, sSlideWd, sdedLine, tCurrentIndex } = this.state;
+      console.log("sMoveX", sMoveX);
+      if (Math.abs(sMoveX) <= sdedLine) {
+        this.swiperRever();
+      }else
+      if (sMoveX > 0) {
+        if (tCurrentIndex === 0) return;
+        let index = this.state.tCurrentIndex;
+        this.tabSwitch(index--);
+      } else {
+        if (tCurrentIndex === this.tabList.length - 1) return;
+        let index = this.state.tCurrentIndex;
+        this.tabSwitch(index++);
+      }
+    },
+    sTouchEnd() {
+      this.targetMaxmove();
+    },
+    /**
+     * 切换滑动逻辑
+     */
+    swiperSlidedis() {
+      let {
+        sWrapper,
+        sSlideWd,
+        tCurrentIndex,
+        tPreIndex,
+        currentTranslate
+      } = this.state;
+      //判断是往左边切换还是往右边切换
+      sSlideWd =
+        tPreIndex - tCurrentIndex < 0
+          ? -sSlideWd * tCurrentIndex
+          : currentTranslate.x + sSlideWd * (tPreIndex - tCurrentIndex);
+      return sSlideWd;
+    },
+    /**
+     * slide end事件
+     */
+    swiperSlideEnd() {
+      let { sWrapper, sSlideWd, sMoveX } = this.state;
+      this.state.currentTranslate = this._getTranslate(sWrapper) || 0;
+    },
+    _translate(ele, x, y, z) {
+      this._transform(
+        ele,
+        "translate3d(" + x + "px, " + y + "px, " + z + "px)"
+      );
+    },
+    _transform(ele, transform) {
+      let elStyle = ele.style;
+      elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
+    },
+    _transitionDuration(ele, time) {
+      let elStyle = ele.style;
+      elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration =
+        time + "ms";
+    },
+    _transitionDurationEndFn() {
+      this._transitionDuration(this.wrapper, 0);
+    },
+    /**
+     * 获取当前元素的translate参数
+     */
+    _getTranslate(el) {
+      let curStyle = window.getComputedStyle(el);
+      let curTransform = curStyle.transform || curStyle.webkitTransform;
+      let x, y;
+      x = y = 0;
+      curTransform = curTransform.split(", ");
+      if (curTransform.length === 6) {
+        x = parseInt(curTransform[4], 10);
+        y = parseInt(curTransform[5], 10);
+      }
+      return {
+        x,
+        y
+      };
+    },
+    /**
+     * 获取当前元素的宽高
+     */
+    _getSize(el) {
+      let curStyle = window.getComputedStyle(el);
+      let { width, height } = curStyle;
+      return {
+        width: Number(width.replace("px", "")),
+        height: Number(height.replace("px", ""))
+      };
     }
   },
-  mounted() {}
+  mounted() {
+    this.state.sWrapper = this.$refs.swraper;
+    this.state.twrapper = this.$refs.twrapper;
+    this.state.sSlideWd =
+      this._getSize(this.state.sWrapper).width / this.tabList.length;
+    this.bind();
+  }
 };
 </script>
 <style lang="stylus" scoped>
@@ -50,6 +282,7 @@ export default {
     height: 36px;
     line-height: 36px;
     text-align: center;
+
     &.active {
       color: red;
     }
@@ -59,11 +292,14 @@ export default {
 .swiperbar {
   overflow-x: hidden;
   width: 100%;
+
   .swiperbar-wraper {
     width: 200%;
+    display: flex;
+
     .swiperbar-slide {
       width: 50%;
-      display: inline-block;
+      display: flex;
     }
   }
 }
