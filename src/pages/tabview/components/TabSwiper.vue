@@ -23,6 +23,7 @@
   </div>
 </template>
 <script>
+import {_translate,_transform,_transitionDuration,_getTranslate,_getSize} from '../utils';
 export default {
   name: "Tabbar",
   data() {
@@ -52,7 +53,7 @@ export default {
           x: 0,
           y: 0
         }, //当前的translate值
-        sdedLine: 80 //swiper 滑动底线
+        sdedLine:60 //swiper 滑动底线
       }
     };
   },
@@ -139,13 +140,14 @@ export default {
     },
     swiperTranslate() {
       let { sWrapper, transitionDuring } = this.state;
-      this._translate(sWrapper, this.swiperSlidedis(), 0, 0);
-      this._transitionDuration(sWrapper, transitionDuring);
+      _translate(sWrapper, this.swiperSlidedis(), 0, 0);
+      _transitionDuration(sWrapper, transitionDuring);
     },
     swiperRever() {
-      let { sWrapper, transitionDuring, currentTranslate } = this.state;
-      this._translate(sWrapper, currentTranslate.x, 0, 0);
-      this._transitionDuration(sWrapper, transitionDuring - 100);
+      let { sWrapper, transitionDuring, currentTranslate,sSlideWd } = this.state;
+      let integer = Math.floor(currentTranslate.x/sSlideWd)*sSlideWd
+      _translate(sWrapper, integer, 0, 0);
+      _transitionDuration(sWrapper, transitionDuring - 100);
     },
     sTouchStart(e) {
       this.state.sStartX =
@@ -158,36 +160,35 @@ export default {
         sWrapper,
         transitionDuring,
         sSlideWd,
-        currentTranslate
+        currentTranslate,
+        tCurrentIndex
       } = this.state;
       let currentX =
         e.type === "touchmove" ? e.targetTouches[0].pageX : e.pageX;
-      //临界值
-      if (currentX < 0) {
-        currentX = 0;
-      }
-      if (currentX > sSlideWd) {
-        currentX = sSlideWd;
-      }
       this.state.sMoveX = Math.round(currentX - sStartX);
-      console.log(currentTranslate.x);
-      this._translate(sWrapper, currentTranslate.x + this.state.sMoveX, 0, 0);
-      this._transitionDuration(sWrapper, transitionDuring);
+       //临界值
+      if(tCurrentIndex===0 & this.state.sMoveX>0){
+        return;
+      }
+       if(tCurrentIndex===this.tabList.length - 1 & this.state.sMoveX<0){
+        return;
+      }
+      _translate(sWrapper, currentTranslate.x + this.state.sMoveX, 0, 0);
+      _transitionDuration(sWrapper, transitionDuring);
     },
     targetMaxmove() {
       let { sMoveX, swraper, sSlideWd, sdedLine, tCurrentIndex } = this.state;
-      console.log("sMoveX", sMoveX);
       if (Math.abs(sMoveX) <= sdedLine) {
         this.swiperRever();
       }else
       if (sMoveX > 0) {
         if (tCurrentIndex === 0) return;
         let index = this.state.tCurrentIndex;
-        this.tabSwitch(index--);
+        this.tabSwitch(--index);
       } else {
         if (tCurrentIndex === this.tabList.length - 1) return;
         let index = this.state.tCurrentIndex;
-        this.tabSwitch(index++);
+        this.tabSwitch(++index);
       }
     },
     sTouchEnd() {
@@ -204,11 +205,12 @@ export default {
         tPreIndex,
         currentTranslate
       } = this.state;
+      let integer = Math.floor(currentTranslate.x/sSlideWd)*sSlideWd;
       //判断是往左边切换还是往右边切换
       sSlideWd =
         tPreIndex - tCurrentIndex < 0
           ? -sSlideWd * tCurrentIndex
-          : currentTranslate.x + sSlideWd * (tPreIndex - tCurrentIndex);
+          : integer + sSlideWd * (tPreIndex - tCurrentIndex);
       return sSlideWd;
     },
     /**
@@ -216,61 +218,14 @@ export default {
      */
     swiperSlideEnd() {
       let { sWrapper, sSlideWd, sMoveX } = this.state;
-      this.state.currentTranslate = this._getTranslate(sWrapper) || 0;
+      this.state.currentTranslate = _getTranslate(sWrapper) || 0;
     },
-    _translate(ele, x, y, z) {
-      this._transform(
-        ele,
-        "translate3d(" + x + "px, " + y + "px, " + z + "px)"
-      );
-    },
-    _transform(ele, transform) {
-      let elStyle = ele.style;
-      elStyle.webkitTransform = elStyle.MsTransform = elStyle.msTransform = elStyle.MozTransform = elStyle.OTransform = elStyle.transform = transform;
-    },
-    _transitionDuration(ele, time) {
-      let elStyle = ele.style;
-      elStyle.webkitTransitionDuration = elStyle.MsTransitionDuration = elStyle.msTransitionDuration = elStyle.MozTransitionDuration = elStyle.OTransitionDuration = elStyle.transitionDuration =
-        time + "ms";
-    },
-    _transitionDurationEndFn() {
-      this._transitionDuration(this.wrapper, 0);
-    },
-    /**
-     * 获取当前元素的translate参数
-     */
-    _getTranslate(el) {
-      let curStyle = window.getComputedStyle(el);
-      let curTransform = curStyle.transform || curStyle.webkitTransform;
-      let x, y;
-      x = y = 0;
-      curTransform = curTransform.split(", ");
-      if (curTransform.length === 6) {
-        x = parseInt(curTransform[4], 10);
-        y = parseInt(curTransform[5], 10);
-      }
-      return {
-        x,
-        y
-      };
-    },
-    /**
-     * 获取当前元素的宽高
-     */
-    _getSize(el) {
-      let curStyle = window.getComputedStyle(el);
-      let { width, height } = curStyle;
-      return {
-        width: Number(width.replace("px", "")),
-        height: Number(height.replace("px", ""))
-      };
-    }
   },
   mounted() {
     this.state.sWrapper = this.$refs.swraper;
     this.state.twrapper = this.$refs.twrapper;
     this.state.sSlideWd =
-      this._getSize(this.state.sWrapper).width / this.tabList.length;
+      _getSize(this.state.sWrapper).width / this.tabList.length;
     this.bind();
   }
 };
